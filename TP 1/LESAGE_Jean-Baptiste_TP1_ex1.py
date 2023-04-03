@@ -64,8 +64,8 @@ def determinant(matrice):
         return matrice[0, 0]
 
 
-def cramer(a, b):
-    """Calcul de la solution d'un système par la méthode de Cramer.
+def cramer(a, b):  # TODO: Redéfinir la fonction de façon lisible
+    """Calcul de la solution d'un système linéaire par la méthode de Cramer.
 
     Parameters
     ----------
@@ -78,62 +78,68 @@ def cramer(a, b):
     -------
     ndarray
     """
+    n, _ = np.shape(a)
     return np.array([[determinant(np.concatenate((a[:, :i], b, a[:, i+1:]), axis=1))] for i in range(n)])/determinant(a)
 
 
 #%%
 
-print('+' + '-'*51 + '+')
-print("| Résolution d'un système choisi par l'utilisateur |")
-print('+' + '-'*51 + '+')
+def main():
+    print('+' + '-'*51 + '+')
+    print("| Résolution d'un système choisi par l'utilisateur |")
+    print('+' + '-'*51 + '+')
 
-n = int(input("Saisir la dimension du système : "))
-a, b, x, det = import_mat(n)
+    n = int(input("Saisir la dimension du système : "))
+    a, b, x, det = import_mat(n)
 
-print('-'*14 + ' Importation du système ' + '-'*15, sep='')
+    print('-'*14 + ' Importation du système ' + '-'*15, sep='')
 
-print("\nA :\n", a, sep='')
-print("\nB :\n", b, sep='')
-print("\nX :\n", x, sep='')
-print("\nDéterminant :", det)
-print()
+    print("\nA :\n", a, sep='')
+    print("\nB :\n", b, sep='')
+    print("\nX :\n", x, sep='')
+    print("\nDéterminant :", det)
+    print()
 
-#%%
+    #%%
 
-print('-'*15 + ' Calcul du déterminant ' + '-'*15)
+    print('-'*15 + ' Calcul du déterminant ' + '-'*15)
 
-d = determinant(a)
-print("\nDéterminant calculé : ", d)
-print('Erreur du déterminant calculé : ', np.abs(d-det))
-print()
+    d = determinant(a)
+    print("\nDéterminant calculé : ", d)
+    print('Erreur du déterminant calculé : ', np.abs(d-det))
+    print()
 
-#%%
+    #%%
 
-print('-'*20 + ' Calcul de x ' + '-'*20)
+    print('-'*20 + ' Calcul de x ' + '-'*20)
 
-solution = cramer(a, b)
-print("\nSolution calculée :\n", solution, sep='')
-print('Erreur de la solution calculée : ', np.linalg.norm(a.dot(solution)-b))
-print()
+    solution = cramer(a, b)
+    print("\nSolution calculée :\n", solution, sep='')
+    print('Erreur de la solution calculée : ', np.linalg.norm(a.dot(solution)-b))
+    print()
 
-#%%
+    #%%
 
-print('+' + '-'*51 + '+')
-print("|    Résolution des systèmes de dimension 2 à 8    |")
-print('+' + '-'*51 + '+')
+    print('+' + '-'*51 + '+')
+    print("|    Résolution des systèmes de dimension 2 à 8    |")
+    print('+' + '-'*51 + '+')
 
-temps_execution = []
-for n in range(2, 9):
-    a, b, _, _ = import_mat(n)
-    print('(' + str(n) + ') ... ', end='')
-    start = time.time()
-    cramer(a, b)
-    temps_execution.append(time.time()-start)
-    print('OK')
+    temps_execution = []
+    for n in range(2, 9):
+        a, b, _, _ = import_mat(n)
+        print('(' + str(n) + ') ... ', end='')
+        start = time.time()
+        cramer(a, b)
+        temps_execution.append(time.time()-start)
+        print('OK')
 
-plt.grid()
-plt.plot(range(2, 9), temps_execution)
-plt.title('Méthode de Cramer')
-plt.xlabel('Dimension du système')
-plt.ylabel('Temps de calcul (en s)')
-plt.show()
+    plt.grid()
+    plt.plot(range(2, 9), temps_execution)
+    plt.title('Méthode de Cramer')
+    plt.xlabel('Dimension du système')
+    plt.ylabel('Temps de calcul (en s)')
+    plt.show()
+
+
+if __name__ == '__main__':
+    main()
