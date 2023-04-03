@@ -10,10 +10,24 @@ path: str = 'C:/Users/Uxus/PycharmProjects/MENUM/TP 1'
 
 
 def import_mat(n):
-    """Importation d'une matrice de dimension n à partir du fichier correspondant.
-    :type n: int
-    """
+    """Importation d'une matrice à partir du fichier correspondant.
 
+    Parameters
+    ----------
+    n : int
+        Dimension de la matrice
+
+    Returns
+    -------
+    a : ndarray
+        Matrice A
+    b : ndarray
+        Matrice B
+    x : ndarray
+        Matrice des solutions du système
+    det : float
+        Déterminant
+    """
     file = open(path + '/linear_systems_to_solve/sysLin_' + str(n), 'r')
     lines = file.readlines()
     file.close()
@@ -27,8 +41,17 @@ def import_mat(n):
 
 
 def determinant(matrice):
-    """Calcul du déterminant d'une matrice."""
+    """Calcul le déterminant d'une matrice carrée.
 
+    Parameters
+    ----------
+    matrice : ndarray
+        Matrice carrée
+
+    Returns
+    -------
+    float
+    """
     n, _ = matrice.shape
     if n > 2:
         s = 0
@@ -41,7 +64,22 @@ def determinant(matrice):
         return matrice[0, 0]
 
 
-cramer = lambda a, b: np.array([[determinant(np.concatenate((a[:, :i], b, a[:, i+1:]), axis=1))] for i in range(n)])/determinant(a)
+def cramer(a, b):
+    """Calcul de la solution d'un système par la méthode de Cramer.
+
+    Parameters
+    ----------
+    a : ndarray
+        Matrice A
+    b : ndarray
+        Matrice B
+
+    Returns
+    -------
+    ndarray
+    """
+    return np.array([[determinant(np.concatenate((a[:, :i], b, a[:, i+1:]), axis=1))] for i in range(n)])/determinant(a)
+
 
 #%%
 
