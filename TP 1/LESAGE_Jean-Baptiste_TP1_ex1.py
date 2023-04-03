@@ -52,11 +52,11 @@ print('+' + '-'*51 + '+')
 n = int(input("Saisir la dimension du système : "))
 a, b, x, det = import_mat(n)
 
-print('-'*14 + ' Importation du système ' + '-'*15)
+print('-'*14 + ' Importation du système ' + '-'*15, sep='')
 
-print("\nA :\n", a)
-print("\nB :\n", b)
-print("\nX :\n", x)
+print("\nA :\n", a, sep='')
+print("\nB :\n", b, sep='')
+print("\nX :\n", x, sep='')
 print("\nDéterminant :", det)
 print()
 
@@ -74,7 +74,7 @@ print()
 print('-'*20 + ' Calcul de x ' + '-'*20)
 
 solution = cramer(a, b)
-print("\nSolution calculée :\n", solution)
+print("\nSolution calculée :\n", solution, sep='')
 print('Erreur de la solution calculée : ', np.linalg.norm(a.dot(solution)-b))
 print()
 
