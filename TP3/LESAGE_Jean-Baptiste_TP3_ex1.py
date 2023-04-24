@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 
 #%%
 path = './linear_systems_to_solve/'
-# path = '//intram.ensam.eu/Cluny/TP/tp-infomath/MENUM/linear_systems_to_solve/sysLinDiagDominante_'
-N_max, epsilon = 100, 10e-6
+# path = '//intram.ensam.eu/Cluny/TP/tp-infomath/MENUM/linear_systems_to_solve/'
+iteration_max, epsilon = 100, 10e-6
 
 
 def import_mat(n):
@@ -26,7 +26,7 @@ def jacobi(a, b, x0=None):
     a_ = a.copy()
     np.fill_diagonal(a_, 0)
     D = np.diag(a)[:, np.newaxis]
-    while iteration < N_max and e >= epsilon:
+    while iteration < iteration_max and e >= epsilon:
         x.append((b - a_.dot(x[-1])) / D)
         e = np.linalg.norm(x[-1] - x[-2])
         iteration += 1
@@ -37,7 +37,7 @@ def gauss_seidel(a, b, x0=None):
     n, _ = a.shape
     e, iteration = epsilon, 0
     x = [np.zeros((n, 1), float) if x0 is None else x0]
-    while iteration < N_max and e >= epsilon:
+    while iteration < iteration_max and e >= epsilon:
         x.append(x[-1].copy())
         for i in range(n):
             s = 0
@@ -55,7 +55,7 @@ def relaxation(a, b, x0=None, w=1.2):
     n, _ = a.shape
     e, iteration = epsilon, 0
     x = [np.zeros((n, 1), float) if x0 is None else x0]
-    while iteration < N_max and e >= epsilon:
+    while iteration < iteration_max and e >= epsilon:
         x.append(x[-1].copy())
         for i in range(n):
             s = 0
@@ -79,19 +79,16 @@ def change_array(x):
 def aff(a, b, x, method=None):
     n, _ = a.shape
     
-    print('\nFin de', method, 'en', len(x), 'itérations')
+    print('\nFin de', method, 'en', len(x)-1, 'itérations')
     print('Justesse :', np.linalg.norm(a.dot(x[-1]) - b))
     
     if n == 2:
         plt.figure()
-        
         s = np.linspace(-10, 15, 2)
         plt.plot(s, (b[0] - a[0, 0] * s) / a[0, 1], 'tab:blue')
         plt.plot(s, (b[1] - a[1, 0] * s) / a[1, 1], 'tab:blue')
-        
         x = change_array(np.array(x).T[0])
         plt.plot(x[0], x[1], 'r.--')
-        
         plt.title(method)
         plt.show()
 
@@ -110,9 +107,6 @@ def main():
     print("\nB :\n", b, sep='')
     print("\nX :\n", x, sep='')
     print()
-
-    #%%
-
     print('+' + '-'*51 + '+')
     print("|          Résolution par méthode itérative         |")
     print('+' + '-'*51 + '+')
