@@ -2,11 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #%%
-
-global path, epsillon, N_max
 path = './linear_systems_to_solve/'
 # path = '//intram.ensam.eu/Cluny/TP/tp-infomath/MENUM/linear_systems_to_solve/sysLinDiagDominante_'
-N_max, epsillon = 100, 10e-6
+N_max, epsilon = 100, 10e-6
+
 
 def import_mat(n):
     f = open(path + 'sysLinDiagDominante_' + str(n), 'r')
@@ -22,12 +21,12 @@ def import_mat(n):
 
 def jacobi(A, B, x0=None):
     n, _ = A.shape
-    e, N = epsillon, 0
+    e, N = epsilon, 0
     X = [np.zeros((n, 1), float) if x0 is None else x0]
     A_ = A.copy()
     np.fill_diagonal(A_, 0)
     D = np.diag(A)[:, np.newaxis]
-    while N < N_max and e >= epsillon:
+    while N < N_max and e >= epsilon:
         X.append((B - A_.dot(X[-1]))/D)
         e = np.linalg.norm(X[-1] - X[-2])
         N += 1
@@ -36,9 +35,9 @@ def jacobi(A, B, x0=None):
 
 def gauss_seidel(A, B, x0=None):
     n, _ = A.shape
-    e, N = epsillon, 0
+    e, N = epsilon, 0
     X = [np.zeros((n, 1), float) if x0 is None else x0]
-    while N < N_max and e >= epsillon:
+    while N < N_max and e >= epsilon:
         X.append(X[-1].copy())
         for i in range(n):
             s = 0
@@ -54,9 +53,9 @@ def gauss_seidel(A, B, x0=None):
 
 def relaxation(A, B, x0=None, w=1.2):
     n, _ = A.shape
-    e, N = epsillon, 0
+    e, N = epsilon, 0
     X = [np.zeros((n, 1), float) if x0 is None else x0]
-    while N < N_max and e >= epsillon:
+    while N < N_max and e >= epsilon:
         X.append(X[-1].copy())
         for i in range(n):
             s = 0
