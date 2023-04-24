@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #%%
-path = './linear_systems_to_solve/'
-# path = '//intram.ensam.eu/Cluny/TP/tp-infomath/MENUM/linear_systems_to_solve/'
+# path = './linear_systems_to_solve/'
+path = '//intram.ensam.eu/Cluny/TP/tp-infomath/MENUM/linear_systems_to_solve/'
 iteration_max, epsilon = 100, 10e-6
 
 
