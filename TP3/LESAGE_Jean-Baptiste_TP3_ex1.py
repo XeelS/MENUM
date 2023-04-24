@@ -1,19 +1,15 @@
-"""
-Created on Tue Oct 25 09:29:37 2022
-@author: BURILLIER Valentin
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 
 #%%
 
 global path, epsillon, N_max
-path = '//intram.ensam.eu/Cluny/TP/tp-infomath/MENUM/linear_systems_to_solve/sysLinDiagDominante_'
+path = './linear_systems_to_solve/'
+# path = '//intram.ensam.eu/Cluny/TP/tp-infomath/MENUM/linear_systems_to_solve/sysLinDiagDominante_'
 N_max, epsillon = 100, 10e-6
 
 def import_mat(n):
-    f = open(path + str(n), 'r')
+    f = open(path + 'sysLinDiagDominante_' + str(n), 'r')
     lines = f.readlines()
     f.close()
     
@@ -22,6 +18,7 @@ def import_mat(n):
     X = np.array([[float(cara)] for cara in lines[n+4].split(" ") if cara != ''])
     
     return A, B, X
+
 
 def jacobi(A, B, x0=None):
     n, _ = A.shape
@@ -35,6 +32,7 @@ def jacobi(A, B, x0=None):
         e = np.linalg.norm(X[-1] - X[-2])
         N += 1
     return X
+
 
 def gauss_seidel(A, B, x0=None):
     n, _ = A.shape
@@ -52,6 +50,7 @@ def gauss_seidel(A, B, x0=None):
         e = np.linalg.norm(X[-1] - X[-2])
         N += 1
     return X
+
 
 def relaxation(A, B, x0=None, w=1.2):
     n, _ = A.shape
@@ -71,16 +70,18 @@ def relaxation(A, B, x0=None, w=1.2):
         N += 1
     return X
 
+
 def change_array(X):
     XX = np.empty((2, X.shape[1]*2))
     XX[:, ::2] = XX[:, 1::2] = X
     return XX[0, 1:], XX[1, :-1]
 
+
 def aff(A, B, X, method=None):
     n, _ = A.shape
     
     print('\nFin de', method, 'en', len(X), 'itérations')
-    print('Justesse :', np.linalg.norm(A.dot(X[-1]) -  B))
+    print('Justesse :', np.linalg.norm(A.dot(X[-1]) - B))
     
     if n == 2:
         plt.figure()
@@ -95,33 +96,37 @@ def aff(A, B, X, method=None):
         plt.title(method)
         plt.show()
 
-#%%
 
-print('+' + '-'*51 + '+')
-print("| Résoluttion d'un système choisi par l'utilisateur |")
-print('+' + '-'*51 + '+')
+def main():
+    print('+' + '-'*51 + '+')
+    print("| Résolution d'un système choisi par l'utilisateur |")
+    print('+' + '-'*51 + '+')
 
-n = int(input("Saisir la dimension du système : "))
-A, B, X = import_mat(n)
+    n = int(input("Saisir la dimension du système : "))
+    A, B, X = import_mat(n)
 
-print('-'*14 + ' Importation du système ' + '-'*15)
+    print('-'*14 + ' Importation du système ' + '-'*15)
 
-print("\nA :\n", A)
-print("\nB :\n", B)
-print("\nX :\n", X)
-print()
+    print("\nA :\n", A, sep='')
+    print("\nB :\n", B, sep='')
+    print("\nX :\n", X, sep='')
+    print()
 
-#%%
+    #%%
 
-print('+' + '-'*51 + '+')
-print("|          Résolution par méthode itérative         |")
-print('+' + '-'*51 + '+')
+    print('+' + '-'*51 + '+')
+    print("|          Résolution par méthode itérative         |")
+    print('+' + '-'*51 + '+')
 
-if n == 2:
-    x0 = np.array([[15.], [10.]])
-else:
-    x0 = None
+    if n == 2:
+        x0 = np.array([[15.], [10.]])
+    else:
+        x0 = None
 
-aff(A, B, jacobi(A, B, x0), 'Jacobi')
-aff(A, B, gauss_seidel(A, B, x0), 'Gauss-Seidel')
-aff(A, B, relaxation(A, B, x0), 'Relaxation')
+    aff(A, B, jacobi(A, B, x0), 'Jacobi')
+    aff(A, B, gauss_seidel(A, B, x0), 'Gauss-Seidel')
+    aff(A, B, relaxation(A, B, x0), 'Relaxation')
+
+
+if __name__ == '__main__':
+    main()
